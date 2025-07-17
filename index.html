@@ -5,9 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Daily Motivation - Namma Udyama</title>
   <style>
+    :root {
+      --bg-light: linear-gradient(to right, #dfe9f3, #ffffff);
+      --text-light: #333;
+      --quote-light: #444;
+      --btn-bg-light: #4a90e2;
+      --btn-hover-light: #357abd;
+
+      --bg-dark: #121212;
+      --text-dark: #ddd;
+      --quote-dark: #bbb;
+      --btn-bg-dark: #bb86fc;
+      --btn-hover-dark: #9a67ea;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #dfe9f3, #ffffff);
       min-height: 100vh;
       margin: 0;
       padding: 20px;
@@ -16,43 +29,77 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      color: #333;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.4s ease, color 0.4s ease;
     }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
     h1 {
       font-size: 2.2rem;
       margin-bottom: 0.5em;
     }
+
     #quote {
       font-size: 1.5rem;
       margin: 1em 0 1.5em 0;
       max-width: 600px;
       line-height: 1.4;
-      color: #444;
+      color: var(--quote-light);
+      transition: color 0.4s ease;
     }
+
+    body.dark #quote {
+      color: var(--quote-dark);
+    }
+
     .buttons {
       display: flex;
       gap: 12px;
       justify-content: center;
       margin-bottom: 1.5em;
+      flex-wrap: wrap;
     }
+
     button, select {
       cursor: pointer;
       padding: 10px 16px;
       font-size: 1rem;
       border: none;
       border-radius: 6px;
-      background-color: #4a90e2;
+      background-color: var(--btn-bg-light);
       color: white;
       transition: background-color 0.3s ease;
     }
+
     button:hover, select:hover {
-      background-color: #357ABD;
+      background-color: var(--btn-hover-light);
     }
+
+    body.dark button, body.dark select {
+      background-color: var(--btn-bg-dark);
+    }
+
+    body.dark button:hover, body.dark select:hover {
+      background-color: var(--btn-hover-dark);
+    }
+
     footer {
       position: fixed;
       bottom: 10px;
       font-size: 0.9rem;
       color: #aaa;
+    }
+
+    #darkModeToggle {
+      font-size: 1.3rem;
+      line-height: 1;
+      padding: 10px 14px;
+      user-select: none;
     }
   </style>
 </head>
@@ -66,6 +113,7 @@
       <option value="en" selected>English</option>
       <option value="kn">Kannada</option>
     </select>
+    <button id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
   </div>
 
   <div id="quote">Loading...</div>
@@ -76,6 +124,21 @@
   </div>
 
   <footer>Made by Nirmal | Visit daily for fresh thoughts</footer>
+
+  <!-- OneSignal SDK -->
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "daf2949f-514c-4ef7-a335-a3b0f54e2cbf",
+        notifyButton: {
+          enable: true, // Show bell widget
+        },
+        allowLocalhostAsSecureOrigin: true // For testing on localhost
+      });
+    });
+  </script>
 
   <script>
     const quotes = {
@@ -140,7 +203,39 @@
       const whatsappURL = `https://wa.me/?text=${encodedQuote}`;
       window.open(whatsappURL, '_blank');
     });
+
+    // Dark mode toggle logic
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    function setDarkMode(enabled) {
+      if (enabled) {
+        body.classList.add('dark');
+        darkModeToggle.textContent = '☀️';
+        localStorage.setItem('darkMode', 'true');
+      } else {
+        body.classList.remove('dark');
+        darkModeToggle.textContent = '🌙';
+        localStorage.setItem('darkMode', 'false');
+      }
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      const isDark = body.classList.contains('dark');
+      setDarkMode(!isDark);
+    });
+
+    // Load saved preference
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('darkMode');
+      if (saved === 'true') {
+        setDarkMode(true);
+      } else {
+        setDarkMode(false);
+      }
+    });
   </script>
 
 </body>
 </html>
+
