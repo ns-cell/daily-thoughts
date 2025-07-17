@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Motivation - Namma Udyama</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+    }
+    h1 {
+      font-size: 2em;
+      color: #333;
+    }
+    .quote {
+      font-size: 1.5em;
+      color: #555;
+      margin: 20px;
+      text-align: center;
+      padding: 0 20px;
+    }
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌟 Today's Thought 🌟</h1>
+  <div class="quote" id="dailyQuote">Loading...</div>
+
+  <footer>Made by Nirmal | Visit daily for fresh thoughts</footer>
+
+  <script>
+    const thoughts = [
+      "Believe in yourself and all that you are.",
+      "Small steps every day lead to big changes.",
+      "Dream it. Wish it. Do it.",
+      "Stay positive, work hard, and make it happen.",
+      "You are stronger than you think.",
+      "Success doesn’t come to you — you go to it.",
+      "Don’t watch the clock; do what it does — keep going.",
+      "Push yourself, because no one else is going to do it for you.",
+      "Your only limit is your mind.",
+      "Doubt kills more dreams than failure ever will."
+      // You can add more quotes here!
+    ];
+
+    const today = new Date();
+    const dayIndex = today.getDate() % thoughts.length;
+    document.getElementById("dailyQuote").textContent = thoughts[dayIndex];
+  </script>
+
+</body>
+</html>
