@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Daily Motivation - Namma Udyama</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(to right, #dfe9f3, #ffffff);
-    }
-    h1 {
-      font-size: 2em;
+      text-align: center;
       color: #333;
     }
-    .quote {
-      font-size: 1.5em;
-      color: #555;
-      margin: 20px;
-      text-align: center;
-      padding: 0 20px;
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5em;
+    }
+    #quote {
+      font-size: 1.5rem;
+      margin: 1em 0 1.5em 0;
+      max-width: 600px;
+      line-height: 1.4;
+      color: #444;
+    }
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 1.5em;
+    }
+    button, select {
+      cursor: pointer;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #4a90e2;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+    button:hover, select:hover {
+      background-color: #357ABD;
     }
     footer {
-      position: absolute;
+      position: fixed;
       bottom: 10px;
-      font-size: 0.9em;
+      font-size: 0.9rem;
       color: #aaa;
     }
   </style>
@@ -37,28 +59,87 @@
 <body>
 
   <h1>🌟 Today's Thought 🌟</h1>
-  <div class="quote" id="dailyQuote">Loading...</div>
+
+  <div class="buttons">
+    <label for="langSelect" style="align-self:center; color:#555;">Choose Language:</label>
+    <select id="langSelect" aria-label="Select quote language">
+      <option value="en" selected>English</option>
+      <option value="kn">Kannada</option>
+    </select>
+  </div>
+
+  <div id="quote">Loading...</div>
+
+  <div class="buttons">
+    <button id="copyBtn" title="Copy quote to clipboard">📋 Copy</button>
+    <button id="whatsappBtn" title="Share quote on WhatsApp">📲 Share on WhatsApp</button>
+  </div>
 
   <footer>Made by Nirmal | Visit daily for fresh thoughts</footer>
 
   <script>
-    const thoughts = [
-      "Believe in yourself and all that you are.",
-      "Small steps every day lead to big changes.",
-      "Dream it. Wish it. Do it.",
-      "Stay positive, work hard, and make it happen.",
-      "You are stronger than you think.",
-      "Success doesn’t come to you — you go to it.",
-      "Don’t watch the clock; do what it does — keep going.",
-      "Push yourself, because no one else is going to do it for you.",
-      "Your only limit is your mind.",
-      "Doubt kills more dreams than failure ever will."
-      // You can add more quotes here!
-    ];
+    const quotes = {
+      en: [
+        "Believe in yourself and all that you are.",
+        "Small steps every day lead to big changes.",
+        "Dream it. Wish it. Do it.",
+        "Stay positive, work hard, and make it happen.",
+        "You are stronger than you think.",
+        "Success doesn’t come to you — you go to it.",
+        "Don’t watch the clock; do what it does — keep going.",
+        "Push yourself, because no one else is going to do it for you.",
+        "Your only limit is your mind.",
+        "Doubt kills more dreams than failure ever will."
+      ],
+      kn: [
+        "ನಿಮ್ಮ ಮೇಲೆ ನಂಬಿಕೆ ಇಡಿ ಮತ್ತು ನೀವು ಇರುವ ಎಲ್ಲಾ ಶಕ್ತಿಯನ್ನು ವಿಶ್ವಾಸಿಸಿ.",
+        "ಪ್ರತಿ ದಿನ ಸಣ್ಣ ಹೆಜ್ಜೆಗಳು ದೊಡ್ಡ ಬದಲಾವಣೆಗೆ ದಾರಿ ಮಾಡಿಕೊಡುತ್ತವೆ.",
+        "ಸ್ವಪ್ನ ನೋಡಿ. ಬಯಸಿರಿ. ಮಾಡಿ.",
+        "ಧನಾತ್ಮಕವಾಗಿರಿ, ಕಠಿಣ ಪರಿಶ್ರಮ ಮಾಡಿ, ಮತ್ತು ಸಾಧನೆ ಮಾಡಿ.",
+        "ನೀವು ನೀವು ಭಾವಿಸುವುದಕ್ಕಿಂತ ಹೆಚ್ಚು ಬಲಿಷ್ಠರು.",
+        "ಯಶಸ್ಸು ನಿಮ್ಮ ಹತ್ತಿರ ಬರುತ್ತಿಲ್ಲ — ನೀವು ಅದನ್ನು ತಲುಪಬೇಕು.",
+        "ಗಡಿಯಾರವನ್ನು ನೋಡಬೇಡಿ; ಅದು ಏನು ಮಾಡುತ್ತದೆ ಹಾಗೆ ಮಾಡಿ — ಮುಂದುವರಿಸಿ.",
+        "ನಿಮ್ಮನ್ನು ನೀವು ತಳ್ಳಿರಿ, ಏಕೆಂದರೆ ಇನ್ನಾರೂ ಇದನ್ನು ನಿಮಗಾಗಿ ಮಾಡುವುದಿಲ್ಲ.",
+        "ನಿಮ್ಮ ಏಕೈಕ ಮಿತಿಯು ನಿಮ್ಮ ಮನಸ್ಸಾಗಿದೆ.",
+        "ಶಂಕೆ ವಿಫಲತೆಯಿಗಿಂತ ಹೆಚ್ಚು ಕನಸುಗಳನ್ನು ಕೊಲ್ಲುತ್ತದೆ."
+      ]
+    };
 
-    const today = new Date();
-    const dayIndex = today.getDate() % thoughts.length;
-    document.getElementById("dailyQuote").textContent = thoughts[dayIndex];
+    function getQuote(lang) {
+      const today = new Date();
+      const index = today.getDate() % quotes[lang].length;
+      return quotes[lang][index];
+    }
+
+    function updateQuote() {
+      const langSelect = document.getElementById('langSelect');
+      const selectedLang = langSelect.value;
+      const quoteText = getQuote(selectedLang);
+      document.getElementById('quote').textContent = quoteText;
+    }
+
+    document.getElementById('langSelect').addEventListener('change', updateQuote);
+
+    // Initial quote load
+    updateQuote();
+
+    // Copy to clipboard
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      const quote = document.getElementById('quote').textContent;
+      navigator.clipboard.writeText(quote).then(() => {
+        alert('Quote copied to clipboard!');
+      }).catch(() => {
+        alert('Failed to copy quote.');
+      });
+    });
+
+    // WhatsApp share
+    document.getElementById('whatsappBtn').addEventListener('click', () => {
+      const quote = document.getElementById('quote').textContent;
+      const encodedQuote = encodeURIComponent(quote);
+      const whatsappURL = `https://wa.me/?text=${encodedQuote}`;
+      window.open(whatsappURL, '_blank');
+    });
   </script>
 
 </body>
